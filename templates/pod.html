@@ -1,0 +1,198 @@
+{% extends "outer.html" %}
+
+{% block body %}
+
+<!-- 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Pengiriman</h1>
+      </div> -->
+
+  <div class="container pb-2 mb-4 border-bottom">
+    <div class="row">
+      <div class="col-sm">
+        <canvas id="pod1" width="400" height="500" class="chartjs-render-monitor"></canvas>
+      </div>
+      <div class="col-sm">
+        <div>
+          <canvas id="pod2" width="500" height="250" class="chartjs-render-monitor"></canvas>
+          <div class="border-bottom my-2"></div>
+          <canvas id="pod3" width="500" height="250" class="chartjs-render-monitor"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+          var dataPOD = {
+              labels: [{% for i in data["pod"][data["pod"].tipe == 'all'].sort_values('urut')['nama']: %}
+                "{{ i }}",
+                {% endfor %}],
+              datasets: [
+                  {
+                  label: 'Airwaybill',
+                  type: 'pie',
+                  data: [{% for i in data["pod"][data["pod"].tipe == 'all'].sort_values('urut')['nilai']: %}
+                    "{{ i }}",
+                    {% endfor %}],
+                  backgroundColor: [
+                  window.chartColors.green,
+                  window.chartColors.blue,
+                  window.chartColors.orange,
+                  window.chartColors.purple,
+                  window.chartColors.red,
+                  ]
+                  }
+                ]
+              }
+
+          var dataPOD2 = {
+              labels: [{% for i in data["pod"][data["pod"].tipe == 'notdonelewatjtp'].sort_values('urut')['nama']: %}
+                "{{ i }}",
+                {% endfor %}],
+              datasets: [
+                  {
+                  label: 'Airwaybill',
+                  type: 'bar',
+                  backgroundColor: Chart.helpers.color(window.chartColors.purple).alpha(0.5).rgbString(),
+                  borderColor: window.chartColors.purple,
+                  borderWidth: 1,
+                  lineTension: 0,
+                  data: [{% for i in data["pod"][data["pod"].tipe == 'notdonelewatjtp'].sort_values('urut')['nilai']: %}
+                    "{{ i }}",
+                    {% endfor %}]
+                  }
+                ]
+              }
+
+          var dataPOD3 = {
+              labels: [{% for i in data["pod"][data["pod"].tipe == 'cab'].sort_values('urut')['nama']: %}
+                "{{ i }}",
+                {% endfor %}],
+              datasets: [
+                  {
+                  label: 'Airwaybill',
+                  type: 'doughnut',
+                  data: [{% for i in data["pod"][data["pod"].tipe == 'cab'].sort_values('urut')['nilai']: %}
+                    "{{ i }}",
+                    {% endfor %}],
+                  backgroundColor: [
+                  Chart.helpers.color(window.chartColors.red).alpha(0.75).rgbString(),
+                  Chart.helpers.color(window.chartColors.orange).alpha(0.75).rgbString(),
+                  Chart.helpers.color(window.chartColors.yellow).alpha(0.75).rgbString(),
+                  Chart.helpers.color(window.chartColors.green).alpha(0.75).rgbString(),
+                  Chart.helpers.color(window.chartColors.blue).alpha(0.75).rgbString(),
+                  Chart.helpers.color(window.chartColors.purple).alpha(0.75).rgbString(),
+                  Chart.helpers.color(window.chartColors.grey).alpha(0.75).rgbString(),
+                  ]
+                  }
+                ]
+              }
+
+
+          var cvs = document.getElementById("pod1").getContext('2d');
+          var cPOD = new Chart(cvs, {
+            type: 'pie',
+            data: dataPOD,
+            options: {
+              responsive: false,
+              legend: {
+                position: 'bottom'
+                }
+              }
+            
+            });
+
+          var cvs = document.getElementById("pod2").getContext('2d');
+          var cPOD2 = new Chart(cvs, {
+            type: 'bar',
+            data: dataPOD2,
+            options: {
+              responsive: false,
+              title: {
+                display: true,
+                text: 'NOT DONE LEWAT JTP'
+              },
+              tooltips: {
+                mode: 'index',
+                intersect: false
+                },
+              legend: {
+                display: false
+                },
+              scales: {
+                yAxes: [{
+                  display: true,
+                  position: 'left',
+                  ticks: {beginAtZero:true}
+                  }],
+                xAxes: [{
+                  display: true,
+                  ticks: {
+                    autoSkip: false
+                  }
+                  }]
+                }
+              }
+            
+            });
+
+          var cvs = document.getElementById("pod3").getContext('2d');
+          var cPOD3 = new Chart(cvs, {
+            type: 'doughnut',
+            data: dataPOD3,
+            options: {
+              responsive: false,
+              title: {
+                display: true,
+                text: '5 CABANG DENGAN NOT DONE TERBANYAK'
+              },
+              legend: {
+                display: true,
+                position: 'right'
+                },
+              gridLines: {
+                drawOnChartArea: false
+                }
+              }
+            
+            });
+
+          </script>
+
+      <div class="container">
+        <h2>Data Kurir Paling Rajin POD</h2>
+
+        <div class="table-responsive">
+          <table class="table table-sm table-hover">
+            <thead class="thead-light text-center ">
+              <tr>
+                {% for row in data["kurir"].rename(columns={'cab':'CABANG','nama_cab':'NAMA CABANG', 'kurir':'KURIR', 'nama_kurir': 'NAMA KURIR', 'sdep': 'SUBDEPT', 'pod_non_cod': 'POD NON COD', 'pod_cod': 'POD COD', 'pod_total': 'POD TOTAL'}): %}
+                <th>{{ row }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for i, row in data["kurir"].sort_values('pod_total', ascending=False).iterrows(): %}
+              <tr>
+                {%for col in row: %}
+                  {% if loop.index > 5 %}
+                <td class="text-center">
+                  {{ "{:,.0f}".format(col) }}
+                </td>
+                  {% elif loop.index <= 5 %}
+                <td class="text-left">
+                  {{ col }}
+                </td>
+                  {% endif %}
+                {% endfor %}
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+
+
+
+      </div>
+
+{% endblock %}

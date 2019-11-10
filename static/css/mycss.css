@@ -1,0 +1,100 @@
+/* BUATAN GUE */
+
+.btn {border: 0 none;color: #ffffff;}
+.btn-sales {background: #4dc9f6;}
+.btn-purchase {background: #f67019;}
+.btn-delivery {background: #f53794;}
+.btn-revenue {background: #537bc4;}
+.btn-branch {background: #acc236;}
+.btn-employee {background: #166a8f;}
+.berat {width: 40px;}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+
+.chat-container {
+  background-color: white;
+  font-family: "Ubuntu-Italic", "Lucida Sans", helvetica, sans;
+}
+
+.talk-bubble {
+	margin-top: 5px;
+  	display: inline-block;
+  	position: relative;
+	max-width: 70%;
+	height: auto;
+	border-radius: 30px;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+}
+
+.talk-bubble:after{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  	top: 0px;
+	bottom: auto;
+	border: 22px solid;
+}
+
+.chat-other:after{
+  	left: -20px;
+	right: auto;
+	border-color: gainsboro transparent transparent transparent;
+}
+
+.chat-me:after{
+  	right: -20px;
+	left: auto;
+	border-color: lightgreen transparent transparent transparent;
+}
+
+.talktop{
+	padding-left: 1em;
+	padding-right: 1em;
+  	padding-top: 5px;
+  	line-height: 1.5em;
+
+}
+
+.talkdatetime{
+  font-style: italic;
+	float: right;
+	font-size: 0.8em;
+}
+
+.talktitle{
+  font-weight: bold;
+  color: dodgerblue;
+}
+
+.talktext{
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 5px;
+	text-align: left;
+  line-height: 1.5em;
+}
+.talktext p{
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+}
+
+.chat-me{
+	float: right;
+	margin-right: 40px;
+	background-color: lightgreen;
+}
+
+.chat-other{
+	float: left;
+	margin-left: 40px;
+	background-color: gainsboro;
+}
