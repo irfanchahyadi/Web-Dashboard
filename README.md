@@ -6,6 +6,8 @@ This is just note for myself, step by step how to deploy it on any linux machine
 
 Clone this repository
 ```
+mkdir web
+cd web
 git clone https://github.com/irfanchahyadi/Web-Dashboard.git
 ```
 
