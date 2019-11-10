@@ -1,23 +1,27 @@
 # Web-Dashboard
 Dashboard for displaying KPI on web based
 
-## Setting Environment
-Ignore this step if you dont want to use virtual environment
+## How to deploy
+This is just note for myself, step by step how to deploy it on any linux machine.
+
+Clone this repository
+```
+git clone https://github.com/irfanchahyadi/Web-Dashboard.git
+```
+
+Set up Environment
 ```
 pip install virtualenv
-cd Handwriting-Calculator
+cd Web-Dashboard
 virtualenv venv
 venv\Scripts\activate
 ```
 
-## Requirements
 Install required tools
 ```
 pip install -r requirements.txt
 ```
-**This tools require :**
+This require :
 - [Flask](https://github.com/pallets/flask)
 - [Gunicorn](https://github.com/benoitc/gunicorn)
 - [Pandas](https://github.com/pandas-dev/pandas)
-
-## How to deploy
