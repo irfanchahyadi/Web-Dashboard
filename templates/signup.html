@@ -1,0 +1,54 @@
+<html lang="en">
+<head>
+	<title>Sign Up</title>
+	{% include 'head.html' %}
+	<link href="/static/css/signin.css" rel="stylesheet" >
+</head>
+<body class="text-center" style="">
+	<div class="col">
+	<form class="form-signin" action="/signup/" method="POST">
+		<a href="/">
+	      <img class="mb-4" src="/static/images/logo.png" alt="" width="72" height="72">
+	    </a>
+	    <div class="mb-2">
+	      <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+
+	      <label for="username" class="sr-only">Username</label>
+	      <input type="text" id="username" class="form-control" placeholder="Username" name="username" required="" autofocus="">
+	      
+	      <label for="email" class="sr-only">Email</label>
+	      <input type="email" id="email" class="form-control" placeholder="Email" name="email" required="" autofocus="">
+	      
+	      <label for="password" class="sr-only">Password</label>
+	      <input type="password" id="password" class="form-control" placeholder="Password" name="password" required="" autofocus="">
+	      
+	      <label for="repassword" class="sr-only">Confirm Password</label>
+	      <input type="password" id="repassword" class="form-control" placeholder="Confirm Password" name="repassword" required="" autofocus="">
+
+	      <div>
+		      <img src="/static/images/captcha/{{ data['img'] }}" width="200" height="50" class="mt-4" >
+		      <input type="hidden" id="icaptcha" name="icaptcha" value="{{ data['img'] }}">
+		      <label for="inputEmail" class="sr-only">Username</label>
+		      <input type="text" id="captcha" placeholder="input captcha" name="captcha" required="" autofocus="" style="width: 200px">
+		  </div>
+
+	  </div>
+	  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+	  
+	</form>
+
+	<div class="col text-center col-7 mx-auto">
+	{% if data['sts'] == "OK": %}
+	  <p class="text-success mx-auto">{{ data['msg'] }}</p>
+	{% else: %}
+	  <p class="text-danger mx-auto">{{ data['msg'] }}</p>
+	{% endif %}
+	</div>
+
+	<div class="col text-center">
+	<p class="mt-5 mb-3 text-muted">https://github.com/irfanchahyadi<br>All Rights Reserved.</p>
+	</div>
+	</div>
+ </body>
+
+</html>

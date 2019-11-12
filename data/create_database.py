@@ -1,4 +1,4 @@
-import sqlite3, os
+import sqlite3, os, hashlib
 
 FILENAME = 'web.db'
 
@@ -62,6 +62,19 @@ create_w_kurir = """
 		pod_cod int,
 		pod_total int);
 	"""
+
+create_w_user = """
+	CREATE TABLE w_user (
+		username varchar(20),
+		password varchar(255),
+		datetime_register datetime,
+		datetime_last_login datetime);
+	"""
+
+insert_w_user = """
+	INSERT INTO w_user values
+		('admin', '{}', null, null);
+	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest())
 
 insert_w_all = """
 	INSERT INTO w_all values
@@ -200,6 +213,7 @@ cur.execute(create_w_jual)
 cur.execute(create_w_jual_hari)
 cur.execute(create_w_pod)
 cur.execute(create_w_kurir)
+cur.execute(create_w_user)
 cur.execute(insert_w_all)
 con.commit()
 cur.execute(insert_w_sales_history)
@@ -211,4 +225,6 @@ con.commit()
 cur.execute(insert_w_pod)
 con.commit()
 cur.execute(insert_w_kurir)
+con.commit()
+cur.execute(insert_w_user)
 con.commit()

@@ -8,6 +8,7 @@
 
 <body>
 
+{% if session['username']: %}
 <!-- ########################################## DISINI TOP NAVBAR ########################################## -->
 
 {% include 'header.html' %}
@@ -41,11 +42,16 @@
 
   <main role="main" class="col-md-12 ml-sm-auto col-lg-10 pt-3 px-4">
 
+
 <!-- ########################################## DISINI FRAME UTAMA ########################################## -->
 
 {% block body %}
 {% endblock %}
 
+{% else: %}
+<H3>Login dolo dongs.</H3>
+
+{% endif %}
   </main>
 
   <script type="text/javascript">
