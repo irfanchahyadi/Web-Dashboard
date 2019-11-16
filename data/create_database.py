@@ -1,11 +1,11 @@
-import sqlite3, os, hashlib
+import sqlite3, os, hashlib, datetime
 
 FILENAME = 'web.db'
 
 if FILENAME in os.listdir():
 	os.remove(FILENAME)
 
-create_w_all = """
+sql_script = """
 	CREATE TABLE w_all (
 		branch varchar(5),
 		branch_name varchar(50),
@@ -16,9 +16,7 @@ create_w_all = """
 		tgt_delivery int,
 		act_delivered int,
 		employee int);
-	"""
 
-create_w_sales_history = """
 	CREATE TABLE w_sales_history (
 		yearmonth varchar(4),
 		sales int,
@@ -26,66 +24,48 @@ create_w_sales_history = """
 		purchase_cat2 float,
 		purchase_cat3 float,
 		purchase_cat4 float);
-	"""
 
-create_w_jual = """
-	CREATE TABLE w_jual (
-		tipe varchar(20),
-		urut tinyint,
-		nama varchar(50),
-		nilai int);
-	"""
+	CREATE TABLE w_sales (
+		type varchar(20),
+		sort tinyint,
+		name varchar(50),
+		value int);
 
-create_w_jual_hari = """
-	CREATE TABLE w_jual_hari (
-		tgl date,
-		awb int,
-		rp float);
-	"""
+	CREATE TABLE w_sales_days (
+		date date,
+		sales int,
+		purchase_value float);
 
-create_w_pod = """
-	CREATE TABLE w_pod (
-		tipe varchar(20),
-		urut tinyint,
-		nama varchar(50),
-		nilai int);
-	"""
+	CREATE TABLE w_delivery (
+		type varchar(20),
+		sort tinyint,
+		name varchar(50),
+		value int);
 
-create_w_kurir = """
-	CREATE TABLE w_kurir (
-		cab varchar(5),
-		nama_cab varchar(50),
-		kurir varchar(10),
-		nama_kurir varchar(50),
-		sdep varchar(20),
-		pod_non_cod int,
-		pod_cod int,
-		pod_total int);
-	"""
+	CREATE TABLE w_courier (
+		branch varchar(5),
+		branch_name varchar(50),
+		courier varchar(10),
+		courier_name varchar(50),
+		division varchar(20),
+		delivery_regular int,
+		delivery_cod int,
+		delivery_total int);
 
-create_w_user = """
 	CREATE TABLE w_user (
 		username varchar(20),
 		password varchar(255),
 		datetime_register datetime,
-		datetime_last_login datetime);
-	"""
+		datetime_last_login datetime,
+		count_login int);
 
-insert_w_user = """
-	INSERT INTO w_user values
-		('admin', '{}', null, null);
-	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest())
-
-insert_w_all = """
 	INSERT INTO w_all values
 		('001', 'BRANCH JAKARTA', 'ACTIVE', 254809, 6205364000, 806697000, 236108, 231976, 35),
 		('002', 'BRANCH BANDUNG', 'ACTIVE', 253183, 4621349000, 600775000, 261095, 258354, 30),
 		('003', 'BRANCH SURABAYA', 'ACTIVE', 157182, 3361494000, 336149000, 151018, 148118, 28),
 		('004', 'BRANCH SEMARANG', 'ACTIVE', 93657, 1992740000, 139492000, 90819, 90383, 28),
 		('005', 'BRANCH DENPASAR', 'ACTIVE', 25107, 585495000, 81969000, 23864, 23229, 28);
-	"""
 
-insert_w_sales_history = """
 	INSERT INTO w_sales_history values
 		('1701', 254392, 2100029000, 1776948000, 915398000, 592316000),
 		('1702', 263168, 1988071000, 1733188000, 815620000, 560738000),
@@ -123,30 +103,26 @@ insert_w_sales_history = """
 		('1910', 739122, 4303903000, 6108765000, 1943698000, 1527194000),
 		('1911', 771063, 5227980000, 6495369000, 2534778000, 1584235000),
 		('1912', 783938, 6538913000, 5868254000, 2179636000, 2179639000);
-	"""
 
-insert_w_jual = """
-	INSERT INTO w_jual values
-		('byr', 1, 'TUNAI', 94371),
-		('byr', 2, 'KREDIT', 164332),
-		('byr', 3, 'COD', 4823),
-		('cod', 1, 'COD ONGKIR SAJA          ', 5282),
-		('cod', 2, 'COD ONGKIR + BARANG', 2831),
-		('cod', 3, 'COD BARANG SAJA         ', 781),
-		('cab', 1, 'BRANCH JAKARTA', 6205364000),
-		('cab', 2, 'BRANCH BANDUNG', 4621349000),
-		('cab', 3, 'BRANCH SURABAYA', 3361494000),
-		('cab', 4, 'BRANCH SEMARANG', 1992740000),
-		('cab', 5, 'BRANCH DENPASAR', 585495000),
-		('kons', 1, 'KONSUMEN ABC', 82301000),
-		('kons', 2, 'KONSUMEN DEF', 67125000),
-		('kons', 3, 'KONSUMEN GHI', 424323000),
-		('kons', 4, 'KONSUMEN JKL', 230394000),
-		('kons', 5, 'KONSUMEN MNO', 182329000);
-	"""
+	INSERT INTO w_sales values
+		('payment', 1, 'CASH', 94371),
+		('payment', 2, 'CREDIT', 164332),
+		('payment', 3, 'CASH ON DELIVERY', 4823),
+		('source', 1, 'ORGANIC', 5282),
+		('source', 2, 'PAID', 2831),
+		('source', 3, 'REFERRAL', 781),
+		('branch', 1, 'BRANCH JAKARTA', 6205364000),
+		('branch', 2, 'BRANCH BANDUNG', 4621349000),
+		('branch', 3, 'BRANCH SURABAYA', 3361494000),
+		('branch', 4, 'BRANCH SEMARANG', 1992740000),
+		('branch', 5, 'BRANCH DENPASAR', 585495000),
+		('customer', 1, 'CUSTOMER ABC', 82301000),
+		('customer', 2, 'CUSTOMER DEF', 67125000),
+		('customer', 3, 'CUSTOMER GHI', 424323000),
+		('customer', 4, 'CUSTOMER JKL', 230394000),
+		('customer', 5, 'CUSTOMER MNO', 182329000);
 
-insert_w_jual_hari = """
-	INSERT INTO w_jual_hari values
+	INSERT INTO w_sales_days values
 		('2019-12-02', 37909, 751137000),
 		('2019-12-03', 28537, 565029000),
 		('2019-12-04', 63290, 1150178000),
@@ -169,62 +145,41 @@ insert_w_jual_hari = """
 		('2019-12-27', 54614, 509700000),
 		('2019-12-30', 7718, 169341000),
 		('2019-12-31', 31768, 556646000);
-	"""
 
-insert_w_pod = """
-	INSERT INTO w_pod values
-		('all', 1, 'DONE (Z) BELUM JTP', 91239),
-		('all', 2, 'DONE (Z) LEWAT JTP', 82371),
-		('all', 3, 'NOT DONE BELUM JTP', 23129),
-		('all', 4, 'NOT DONE LEWAT JTP', 14921),
-		('all', 5, 'RETUR (X)', 821),
-		('notdonelewatjtp', 1, '1 hari', 23914),
-		('notdonelewatjtp', 2, '2 hari', 12742),
-		('notdonelewatjtp', 3, '3 hari', 7993),
-		('notdonelewatjtp', 4, '4 hari', 3792),
-		('notdonelewatjtp', 5, '5 hari', 3583),
-		('notdonelewatjtp', 6, '6 hari', 1492),
-		('notdonelewatjtp', 7, '7 hari', 821),
-		('notdonelewatjtp', 8, '8-14 hari', 491),
-		('notdonelewatjtp', 9, '15-30 hari', 102),
-		('notdonelewatjtp', 10, 'diatas 30 hari', 46),
-		('cab', 1, 'BRANCH JAKARTA', 3881),
-		('cab', 2, 'BRANCH BANDUNG', 1291),
-		('cab', 3, 'BRANCH SURABAYA', 523),
-		('cab', 4, 'BRANCH SEMARANG', 299),
-		('cab', 5, 'BRANCH DENPASAR', 331);
-	"""
+	INSERT INTO w_delivery values
+		('all', 1, 'SENT ON TIME', 91239),
+		('all', 2, 'SENT LATE', 82371),
+		('all', 3, 'ON PROGRESS NOT LATE', 23129),
+		('all', 4, 'ON PROGRESS LATE', 14921),
+		('all', 5, 'RETURN', 821),
+		('deliverylate', 1, '1 day', 23914),
+		('deliverylate', 2, '2 days', 12742),
+		('deliverylate', 3, '3 days', 7993),
+		('deliverylate', 4, '4 days', 3792),
+		('deliverylate', 5, '5 days', 3583),
+		('deliverylate', 6, '6 days', 1492),
+		('deliverylate', 7, '7 days', 821),
+		('deliverylate', 8, '8-14 days', 491),
+		('deliverylate', 9, '15-30 days', 102),
+		('deliverylate', 10, 'more than 30 days', 46),
+		('branch', 1, 'BRANCH JAKARTA', 3881),
+		('branch', 2, 'BRANCH BANDUNG', 1291),
+		('branch', 3, 'BRANCH SURABAYA', 523),
+		('branch', 4, 'BRANCH SEMARANG', 299),
+		('branch', 5, 'BRANCH DENPASAR', 331);
 
-insert_w_kurir = """
-	INSERT INTO w_kurir values
+	INSERT INTO w_courier values
 		('001', 'BRANCH JAKARTA', '1089412', 'KURIR 1', 'KURIR', 8221, 471, 8692),
-		('001', 'BRANCH JAKARTA', '1089412', 'KURIR 2', 'KURIR', 8221, 471, 8692),
-		('001', 'BRANCH JAKARTA', '1089412', 'KURIR 3', 'KURIR', 8221, 471, 8692),
-		('001', 'BRANCH JAKARTA', '1089412', 'KURIR 4', 'KURIR', 8221, 471, 8692);
-	"""
+		('002', 'BRANCH BANDUNG', '2947391', 'KURIR 2', 'KURIR', 9309, 642, 9951),
+		('003', 'BRANCH SURABAYA', '3010021', 'KURIR 3', 'KURIR', 7351, 183, 7534),
+		('004', 'BRANCH SEMARANG', '3100375', 'KURIR 4', 'KURIR', 1738, 481, 2219),
+		('005', 'BRANCH DENPASAR', '3683619', 'KURIR 5', 'KURIR', 882, 74, 956);
 
+	INSERT INTO w_user values
+		('admin', '{}', '{}', null, 0);
+	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest(), datetime.datetime.now())
 
 con = sqlite3.connect(FILENAME)
 cur = con.cursor()
 
-cur.execute(create_w_all)
-cur.execute(create_w_sales_history)
-cur.execute(create_w_jual)
-cur.execute(create_w_jual_hari)
-cur.execute(create_w_pod)
-cur.execute(create_w_kurir)
-cur.execute(create_w_user)
-cur.execute(insert_w_all)
-con.commit()
-cur.execute(insert_w_sales_history)
-con.commit()
-cur.execute(insert_w_jual)
-con.commit()
-cur.execute(insert_w_jual_hari)
-con.commit()
-cur.execute(insert_w_pod)
-con.commit()
-cur.execute(insert_w_kurir)
-con.commit()
-cur.execute(insert_w_user)
-con.commit()
+cur.executescript(sql_script)

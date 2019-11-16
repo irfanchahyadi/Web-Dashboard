@@ -15,21 +15,21 @@ def dashboard():
     yesterday = datetime.now() - timedelta(days=1)
     return render_template('dashboard.html', date=yesterday.strftime("%d %b %Y"), data=data)
 
-@app.route('/jual/')
-def jual():
-    w_jual = pd.read_sql("select * from w_jual", conn)
-    w_jual_hari = pd.read_sql("select * from w_jual_hari", conn)
-    data = {"jual": w_jual, "hari": w_jual_hari}
-    kemarin = datetime.now() - timedelta(days=1)
-    return render_template('jual.html', date=kemarin.strftime("%d %b %Y"), data=data)
+@app.route('/sales/')
+def sales():
+    w_sales = pd.read_sql("select * from w_sales", conn)
+    w_sales_days = pd.read_sql("select * from w_sales_days", conn)
+    data = {"sales": w_sales, "days": w_sales_days}
+    yesterday = datetime.now() - timedelta(days=1)
+    return render_template('sales.html', date=yesterday.strftime("%d %b %Y"), data=data)
 
-@app.route('/pod/')
+@app.route('/delivery/')
 def pod():
-    w_pod = pd.read_sql("select * from w_pod", conn)
-    w_kurir = pd.read_sql("select * from w_kurir", conn)
-    data = {"pod": w_pod, "kurir": w_kurir}
-    kemarin = datetime.now() - timedelta(days=1)
-    return render_template('pod.html', date=kemarin.strftime("%d %b %Y"), data=data)
+    w_delivery = pd.read_sql("select * from w_delivery", conn)
+    w_courier = pd.read_sql("select * from w_courier", conn)
+    data = {"delivery": w_delivery, "courier": w_courier}
+    yesterday = datetime.now() - timedelta(days=1)
+    return render_template('delivery.html', date=yesterday.strftime("%d %b %Y"), data=data)
 
 @app.route('/', methods=['GET','POST'])
 @app.route('/login/', methods=['GET','POST'])
@@ -41,13 +41,14 @@ def login():
         pwd = request.form['password']
         hash_pwd = hashlib.sha1(pwd.encode('utf-8')).hexdigest()
         cur = conn.cursor()
-        cur.execute("select password from w_user where username='{}'".format(usr))
+        cur.execute("SELECT password FROM w_user WHERE username='{}'".format(usr))
         key = cur.fetchone()
         if key:
             if hash_pwd == key[0]:
-                # cur2 = conn.cursor()
-                # cur2.execute("exec w_user_login '{}'".format(nip))
-                # conn.commit()
+                cur2 = conn.cursor()
+                login = cur2.execute("SELECT count_login FROM w_user where username='{}'".format(usr)).fetchone()[0]
+                cur2.execute("UPDATE w_user SET count_login={}, datetime_register='{}' WHERE username='{}'".format(login+1, datetime.now(), usr))
+                conn.commit()
                 session['username'] = usr
                 return redirect(url_for('dashboard'))
             else:
@@ -67,33 +68,41 @@ def logout():
 def signup():
     msg = ''
     sts = ''
-    img = os.listdir('static/images/captcha')[random.randint(0,10)]
+    img = os.listdir('static/images/captcha')[random.randint(0,9)]
     if request.method == 'POST':
-        nip = request.form['nip']
+        usr = request.form['username']
+        pwd = request.form['password']
+        repwd = request.form['repassword']
         icaptcha = request.form['icaptcha'].replace('.png','')
         captcha = request.form['captcha']
         cur = conn.cursor()
-        if icaptcha != hashlib.sha1(captcha.encode('utf-8')).hexdigest():
-            msg = "Captcha salah, mohon input captcha dengan benar"
+        if pwd != repwd:
+            msg = "Your password is not same"
             sts = 'NOT OK'
-        elif cur.execute("select count(*) from w_user where nip='{}' and login_count>0".format(nip)).fetchone()[0] > 0:
-            msg = "Nip ini sudah punya akun"
+        elif len(usr)<5:
+            msg = "Username too short"
+            sts = 'NOT OK'
+        elif len(pwd)<5:
+            msg = "Password too short"
+            sts = 'NOT OK'
+        elif icaptcha != hashlib.sha1(captcha.encode('utf-8')).hexdigest():
+            msg = "You type captcha wrong"
+            sts = 'NOT OK'
+        elif cur.execute("SELECT count(*) FROM w_user WHERE username='{}'".format(usr)).fetchone()[0] > 0:
+            msg = "This username is not available"
             sts = 'NOT OK'
         else:
             try:
-                cur = conn.cursor()
-                to = cur.execute("select fitalamat from fit where fitkode='{}'".format(nip)).fetchone()
-                if to:
-                    threading.Thread(target=kirimPassword_insert, args=(nip, to[0] + '@nusantara-sakti.com')).start()
-                    # spwd = kirimPassword_insert(nip, to[0] + '@nusantara-sakti.com')
-                    msg = "Anda telah berhasil mendaftar. Silahkan login dengan password yang sudah dikirimkan ke email anda."
-                    sts = 'OK'
-                else:
-                    msg = "Pendaftaran gagal. Nip salah ketik atau anda belum punya email @nusantara-sakti.com."
-                    sts = 'NOT OK'
+                hash_pwd = hashlib.sha1(pwd.encode('utf-8')).hexdigest()
+                sql_insert = """
+                    INSERT INTO w_user VALUES ('{}', '{}', '{}', null, 0);""".format(usr, hash_pwd, datetime.now())
+                cur.execute(sql_insert)
+                conn.commit()
+                msg = "Thanks for Register. You can now login with your username."
+                sts = 'OK'
             except Exception as e:
                 msg = str(e)
-                msg += "Pendaftaran gagal. Silahkan hubungi admin untuk keterangan lebih lanjut."
+                msg += "Registration failed. Contact our support for more information."
                 sts = 'NOT OK'
     data = {"msg": msg, "img": img, "sts": sts}
     return render_template('signup.html', data=data)

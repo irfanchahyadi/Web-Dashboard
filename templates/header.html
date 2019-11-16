@@ -1,26 +1,26 @@
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
     <!--<img src="/static/images/logo.png" class="col-md-2" style="max-height: 48px; margin-right: -15px; margin-left: -15px"></img>-->
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">Logo</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard">Logo</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarsExample05">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item {% if request.path in ['/', '/dashboard/'] %} active {% endif %}">
-            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          <li class="nav-item {% if request.path in ['/dashboard/'] %} active {% endif %}">
+            <a class="nav-link" href="/dashboard">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item {% if request.path in ['/galery/', '/galeryf/'] %} active {% endif %}">
             <a class="nav-link" href="/galery">Galery</a>
           </li>
           <li class="nav-item {% if request.path in ['/dokumen/'] %} active {% endif %}">
-            <a class="nav-link" href="#">Dokumen</a>
+            <a class="nav-link" href="#">Document</a>
           </li>
           <li class="nav-item dropdown {% if request.path in ['/cektarif/', '/tracking/', '/lokasi/'] %} active {% endif %}">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Fitur</a>
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Features</a>
             <div class="dropdown-menu" aria-labelledby="dropdown05">
-              <a class="dropdown-item" href="/cektarif/">Cek Tarif</a>
+              <a class="dropdown-item" href="/cektarif/">Tarif Check</a>
               <a class="dropdown-item" href="/tracking/">Tracking Airwaybill</a>
-              <a class="dropdown-item" href="/lokasi/">Lokasi Cabang</a>
+              <a class="dropdown-item" href="/lokasi/">Branch Location</a>
             </div>
           </li>
         </ul>

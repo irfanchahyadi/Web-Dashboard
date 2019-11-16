@@ -3,39 +3,39 @@
 {% block body %}
 
 	<!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Penjualan</h1>
+        <h1 class="h2">Sales</h1>
       </div> -->
 
   <div class="container">
     <div class="row">
       <div class="col-sm">
       	<div class="row">
-        	<canvas id="jual1" width="250" height="250" class="chartjs-render-monitor"></canvas>
-        	<canvas id="jual2" width="250" height="250" class="chartjs-render-monitor"></canvas>
+        	<canvas id="sales1" width="250" height="250" class="chartjs-render-monitor"></canvas>
+        	<canvas id="sales2" width="250" height="250" class="chartjs-render-monitor"></canvas>
         </div>
         <div class="border-bottom my-2"></div>
-        <canvas id="jual5" width="450" height="250" class="chartjs-render-monitor"></canvas>
+        <canvas id="sales5" width="450" height="250" class="chartjs-render-monitor"></canvas>
       </div>
       <div class="col-sm">
         <div>
-          <canvas id="jual3" width="450" height="250" class="chartjs-render-monitor"></canvas>
+          <canvas id="sales3" width="450" height="250" class="chartjs-render-monitor"></canvas>
           <div class="border-bottom my-2"></div>
-          <canvas id="jual4" width="450" height="250" class="chartjs-render-monitor"></canvas>
+          <canvas id="sales4" width="450" height="250" class="chartjs-render-monitor"></canvas>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-         var dataJual = {
-              labels: [{% for i in data["jual"][data["jual"].tipe == 'byr'].sort_values('urut')['nama']: %}
+         var dataSales = {
+              labels: [{% for i in data["sales"][data["sales"].type == 'payment'].sort_values('sort')['name']: %}
                 "{{ i }}",
                 {% endfor %}],
               datasets: [
                   {
                   label: 'Airwaybill',
                   type: 'pie',
-                  data: [{% for i in data["jual"][data["jual"].tipe == 'byr'].sort_values('urut')['nilai']: %}
+                  data: [{% for i in data["sales"][data["sales"].type == 'payment'].sort_values('sort')['value']: %}
                     "{{ i }}",
                     {% endfor %}],
                   backgroundColor: [
@@ -47,15 +47,15 @@
                 ]
               }
 
-         var dataJual2 = {
-              labels: [{% for i in data["jual"][data["jual"].tipe == 'cod'].sort_values('urut')['nama']: %}
+         var dataSales2 = {
+              labels: [{% for i in data["sales"][data["sales"].type == 'source'].sort_values('sort')['name']: %}
                 "{{ i }}",
                 {% endfor %}],
               datasets: [
                   {
                   label: 'Airwaybill',
                   type: 'pie',
-                  data: [{% for i in data["jual"][data["jual"].tipe == 'cod'].sort_values('urut')['nilai']: %}
+                  data: [{% for i in data["sales"][data["sales"].type == 'source'].sort_values('sort')['value']: %}
                     "{{ i }}",
                     {% endfor %}],
                   backgroundColor: [
@@ -67,15 +67,15 @@
                 ]
               }
 
-         var dataJual3 = {
-              labels: [{% for i in data["jual"][data["jual"].tipe == 'cab'].sort_values('urut')['nama']: %}
+         var dataSales3 = {
+              labels: [{% for i in data["sales"][data["sales"].type == 'branch'].sort_values('sort')['name']: %}
                 "{{ i }}",
                 {% endfor %}],
               datasets: [
                   {
                   label: 'Airwaybill',
                   type: 'doughnut',
-                  data: [{% for i in data["jual"][data["jual"].tipe == 'cab'].sort_values('urut')['nilai']: %}
+                  data: [{% for i in data["sales"][data["sales"].type == 'branch'].sort_values('sort')['value']: %}
                     "{{ i }}",
                     {% endfor %}],
                   backgroundColor: [
@@ -91,15 +91,15 @@
                 ]
               }
 
-         var dataJual4 = {
-              labels: [{% for i in data["jual"][data["jual"].tipe == 'kons'].sort_values('urut')['nama']: %}
+         var dataSales4 = {
+              labels: [{% for i in data["sales"][data["sales"].type == 'customer'].sort_values('sort')['name']: %}
                 "{{ i }}",
                 {% endfor %}],
               datasets: [
                   {
-                  label: 'Airwaybill',
+                  label: 'Sales',
                   type: 'doughnut',
-                  data: [{% for i in data["jual"][data["jual"].tipe == 'kons'].sort_values('urut')['nilai']: %}
+                  data: [{% for i in data["sales"][data["sales"].type == 'customer'].sort_values('sort')['value']: %}
                     "{{ i }}",
                     {% endfor %}],
                   backgroundColor: [
@@ -115,42 +115,42 @@
                 ]
               }
 
-         var dataJual5 = {
-              labels: [{% for i in data["hari"].sort_values('tgl')['tgl']: %}
+         var dataSales5 = {
+              labels: [{% for i in data["days"].sort_values('date')['date']: %}
                 "{{ i }}",
                 {% endfor %}],
               datasets: [
                   {
-                  label: 'Airwaybill',
+                  label: 'Sales',
                   type: 'line',
                   fill: false,
                   lineTension: 0,
                   borderColor: window.chartColors.red,
                   pointRadius: 0,
                   yAxisID: 'y-axis-right',
-                  data: [{% for i in data["hari"].sort_values('tgl')['awb']: %}
+                  data: [{% for i in data["days"].sort_values('date')['sales']: %}
                     "{{ i }}",
                     {% endfor %}]
                   },
                   {
-                  label: 'Rupiah Jual',
+                  label: 'Purchase Value',
                   type: 'line',
                   fill: false,
                   lineTension: 0,
                   borderColor: window.chartColors.blue,
                   pointRadius: 0,
                   yAxisID: 'y-axis-left',
-                  data: [{% for i in data["hari"].sort_values('tgl')['rp']: %}
+                  data: [{% for i in data["days"].sort_values('date')['purchase_value']: %}
                     "{{ i }}",
                     {% endfor %}]
                   }
                 ]
               }
 
-          var cvs = document.getElementById("jual1").getContext('2d');
-          var cJual = new Chart(cvs, {
+          var cvs = document.getElementById("sales1").getContext('2d');
+          var cSales = new Chart(cvs, {
             type: 'pie',
-            data: dataJual,
+            data: dataSales,
             options: {
               responsive: false,
               legend: {
@@ -159,10 +159,10 @@
               }
             });
 
-          var cvs = document.getElementById("jual2").getContext('2d');
-          var cJual2 = new Chart(cvs, {
+          var cvs = document.getElementById("sales2").getContext('2d');
+          var cSales2 = new Chart(cvs, {
             type: 'pie',
-            data: dataJual2,
+            data: dataSales2,
             options: {
               responsive: false,
               legend: {
@@ -171,15 +171,15 @@
               }
             });
 
-          var cvs = document.getElementById("jual3").getContext('2d');
-          var cJual3 = new Chart(cvs, {
+          var cvs = document.getElementById("sales3").getContext('2d');
+          var cSales3 = new Chart(cvs, {
             type: 'doughnut',
-            data: dataJual3,
+            data: dataSales3,
             options: {
               responsive: false,
               title: {
                 display: true,
-                text: '5 CABANG DENGAN JUAL TERBANYAK'
+                text: 'TOP 5 BRANCH'
               },
               legend: {
                 position: 'left'
@@ -187,15 +187,15 @@
               }
             });
 
-          var cvs = document.getElementById("jual4").getContext('2d');
-          var cJual4 = new Chart(cvs, {
+          var cvs = document.getElementById("sales4").getContext('2d');
+          var cSales4 = new Chart(cvs, {
             type: 'doughnut',
-            data: dataJual4,
+            data: dataSales4,
             options: {
               responsive: false,
               title: {
                 display: true,
-                text: '5 KONSUMEN DENGAN PENGIRIMAN TERBANYAK'
+                text: 'TOP 5 CUSTOMERS'
               },
               legend: {
                 position: 'right'
@@ -203,10 +203,10 @@
               }
             });
 
-          var cvs = document.getElementById("jual5").getContext('2d');
-          var cJual5 = new Chart(cvs, {
+          var cvs = document.getElementById("sales5").getContext('2d');
+          var cSales5 = new Chart(cvs, {
             type: 'line',
-            data: dataJual5,
+            data: dataSales5,
             options: {
               responsive: false,
               tooltips: {
@@ -215,7 +215,7 @@
                 },
               title: {
                 display: true,
-                text: 'JUAL HARIAN'
+                text: 'SALES PER DAYS'
               },
               legend: {
                 position: 'bottom'
@@ -228,7 +228,7 @@
                 ticks: {
                   beginAtZero:true,
                   callback: function(label, index, labels) {
-                    return label/1000000+' juta';
+                    return label/1000000+' M';
                       }
                     }
                   },
