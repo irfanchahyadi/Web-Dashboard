@@ -1,5 +1,5 @@
 # Web-Dashboard
-Dashboard for displaying KPI on web based
+Dashboard for displaying company performance on web based
 
 ## How to deploy
 This is just note for myself, step by step how to deploy it on any linux machine.

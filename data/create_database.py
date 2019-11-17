@@ -7,57 +7,57 @@ if FILENAME in os.listdir():
 
 sql_script = """
 	CREATE TABLE w_all (
-		branch varchar(5),
-		branch_name varchar(50),
-		status varchar(20),
-		sales int,
-		purchase_value float,
-		revenue float,
-		tgt_delivery int,
-		act_delivered int,
-		employee int);
+		branch VARCHAR(5),
+		branch_name VARCHAR(50),
+		status VARCHAR(20),
+		sales INT,
+		purchase_value FLOAT,
+		revenue FLOAT,
+		tgt_delivery INT,
+		act_delivered INT,
+		employee INT);
 
 	CREATE TABLE w_sales_history (
-		yearmonth varchar(4),
-		sales int,
-		purchase_cat1 float,
-		purchase_cat2 float,
-		purchase_cat3 float,
-		purchase_cat4 float);
+		yearmonth VARCHAR(4),
+		sales INT,
+		purchase_cat1 FLOAT,
+		purchase_cat2 FLOAT,
+		purchase_cat3 FLOAT,
+		purchase_cat4 FLOAT);
 
 	CREATE TABLE w_sales (
-		type varchar(20),
-		sort tinyint,
-		name varchar(50),
-		value int);
+		type VARCHAR(20),
+		sort TINYINT,
+		name VARCHAR(50),
+		value INT);
 
 	CREATE TABLE w_sales_days (
-		date date,
-		sales int,
-		purchase_value float);
+		date DATE,
+		sales INT,
+		purchase_value FLOAT);
 
 	CREATE TABLE w_delivery (
-		type varchar(20),
-		sort tinyint,
-		name varchar(50),
-		value int);
+		type VARCHAR(20),
+		sort TINYINT,
+		name VARCHAR(50),
+		value INT);
 
 	CREATE TABLE w_courier (
-		branch varchar(5),
-		branch_name varchar(50),
-		courier varchar(10),
-		courier_name varchar(50),
-		division varchar(20),
-		delivery_regular int,
-		delivery_cod int,
-		delivery_total int);
+		branch VARCHAR(5),
+		branch_name VARCHAR(50),
+		courier VARCHAR(10),
+		courier_name VARCHAR(50),
+		division VARCHAR(20),
+		delivery_regular INT,
+		delivery_cod INT,
+		delivery_total INT);
 
 	CREATE TABLE w_user (
-		username varchar(20),
-		password varchar(255),
-		datetime_register datetime,
-		datetime_last_login datetime,
-		count_login int);
+		username VARCHAR(20),
+		password VARCHAR(255),
+		datetime_register DATETIME,
+		datetime_last_login DATETIME,
+		count_login INT);
 
 	INSERT INTO w_all values
 		('001', 'BRANCH JAKARTA', 'ACTIVE', 254809, 6205364000, 806697000, 236108, 231976, 35),
