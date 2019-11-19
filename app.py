@@ -109,17 +109,17 @@ def signup():
 
 import pymysql
 
-con_mysql  = pymysql.connect(user='irfan', password='', database='db_testing', host='localhost')
+con_mysql  = pymysql.connect(user='irfan', password='', database='db_testing', host='localhost', autocommit=True)
 
 @app.route('/api/', methods=['GET', 'POST'])
 def api():
     data = request.json
     if data['data'][0] != '':
-        data['data'][0] = datetime.strptime(data['data'][0], "%Y-%m-%dT%H:%M:%S.%fZ").strftime('%Y-%m-%d %H:%M:%S')
+        data['data'][0] = (datetime.strptime(data['data'][0], "%Y-%m-%dT%H:%M:%S.%fZ") + timedelta(hours=7)).strftime('%Y-%m-%d %H:%M:%S')
     else:
         data['data'][0] = None
     if data['data'][6] != '':
-        data['data'][6] = datetime.strptime(data['data'][6], "%Y-%m-%dT%H:%M:%S.%fZ").strftime('%Y-%m-%d %H:%M:%S')
+        data['data'][6] = (datetime.strptime(data['data'][6], "%Y-%m-%dT%H:%M:%S.%fZ") + timedelta(hours=7)).strftime('%Y-%m-%d %H:%M:%S')
     else:
         data['data'][6] = None
     
