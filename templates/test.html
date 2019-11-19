@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+	<title>Test</title>
+	{% include 'head.html' %}
+	<link href="/static/css/signin.css" rel="stylesheet" >
+</head>
+<body class="text-center" style="">
+	
+	<div class="container">
+        <h2>SELECT * FROM test_sheet;</h2>
+
+        <div class="table-responsive">
+          <table class="table table-sm table-hover">
+            <thead class="thead-light text-center ">
+              <tr>
+                {% for row in data.rename(columns={'row':'ROW','created_at':'CREATED_AT', 'name':'NAMA', 'phone': 'NO_HANDPHONE', 'channel': 'CHANNEL', 'marketing_type': 'MARKETING_TYPE', 'status': 'STATUS', 'success_at': 'SUCCESS_AT'}): %}
+                <th>{{ row }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for i, row in data.sort_values('row', ascending=True).iterrows(): %}
+              <tr>
+                {%for col in row: %}
+                <td class="text-left">
+                  {{ col }}
+                </td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+
+
+
+      </div>
+
+ </body>
+</html>

@@ -134,5 +134,10 @@ def api():
     con_mysql.commit()
     return "ok"
 
+@app.route('/test/')
+def test():
+    data = pd.read_sql("select * from test_sheet", con_mysql)
+    return render_template('test.html', data=data)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
