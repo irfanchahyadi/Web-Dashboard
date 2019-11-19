@@ -107,5 +107,32 @@ def signup():
     data = {"msg": msg, "img": img, "sts": sts}
     return render_template('signup.html', data=data)
 
+import pymysql
+
+con_mysql  = pymysql.connect(user='irfan', password='', database='db_testing', host='localhost')
+
+@app.route('/api/', methods=['GET', 'POST'])
+def api():
+    data = request.json
+    if data['data'][0] != '':
+        data['data'][0] = datetime.strptime(data['data'][0], "%Y-%m-%dT%H:%M:%S.%fZ").strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        data['data'][0] = None
+    if data['data'][6] != '':
+        data['data'][6] = datetime.strptime(data['data'][6], "%Y-%m-%dT%H:%M:%S.%fZ").strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        data['data'][6] = None
+    
+    data['data'].append(data['row'])
+    print(data['data'])
+    cur_mysql = con_mysql.cursor()
+    if data['method'] == 'insert':
+        sql = "INSERT INTO test_sheet(created_at, name, phone, channel, marketing_type, status, success_at, row) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
+    else:
+        sql = "UPDATE test_sheet SET created_at=%s, name=%s, phone=%s, channel=%s, marketing_type=%s, status=%s, success_at=%s WHERE row=%s;"
+    cur_mysql.execute(sql, tuple(data['data']))
+    con_mysql.commit()
+    return "ok"
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
