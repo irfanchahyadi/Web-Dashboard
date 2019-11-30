@@ -59,6 +59,13 @@ sql_script = """
 		datetime_last_login DATETIME,
 		count_login INT);
 
+	CREATE TABLE w_branch (
+		branch VARCHAR(5),
+		branch_name VARCHAR(50),
+		address VARCHAR(255),
+		latitude FLOAT,
+		longitude FLOAT);
+
 	INSERT INTO w_all values
 		('001', 'BRANCH JAKARTA', 'ACTIVE', 254809, 6205364000, 806697000, 236108, 231976, 35),
 		('002', 'BRANCH BANDUNG', 'ACTIVE', 253183, 4621349000, 600775000, 261095, 258354, 30),
@@ -177,6 +184,13 @@ sql_script = """
 
 	INSERT INTO w_user values
 		('admin', '{}', '{}', null, 0);
+
+	INSERT INTO w_branch values
+		('001', 'BRANCH JAKARTA', 'Jalan A.M Sangaji No. 22-24, Petojo Utara, Gambir, Kota Jakarta Pusat', -6.167521, 106.813580),
+		('002', 'BRANCH BANDUNG', 'Jl. Diponegoro No.22, Citarum, Bandung Wetan, Kota Bandung, Jawa Barat', -6.902247, 107.618826),
+		('003', 'BRANCH SURABAYA', 'Jl. Kusuma Bangsa No.21, Ketabang, Genteng, Kota Surabaya, Jawa Timur', -7.256910, 112.750198),
+		('004', 'BRANCH SEMARANG', 'Jl. Pemuda No.149, RT.5/RW.3, Sekayu, Semarang Tengah, Kota Semarang, Jawa Tengah', -6.980656, 110.412398),
+		('005', 'BRANCH DENPASAR', 'Jl. Gunung Rinjani No.1, Tegal Harum, Denpasar Barat, Kota Denpasar, Bali', -8.663904, 115.199484);
 	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest(), datetime.datetime.now())
 
 con = sqlite3.connect(FILENAME)

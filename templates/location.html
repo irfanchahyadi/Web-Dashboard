@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+  <title>Branch Location</title>
+  {% include 'head.html' %}
+  <link href="/static/css/dashboard.css" rel="stylesheet">
+  <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet">
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+</head>
+<body>
+{% include 'header.html' %}
+
+<div id="map" style="height: calc(100% - 48px)">
+
+</div>
+
+<script>
+var map = L.map('map').setView([-2.546, 118.016], 5);
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    id: 'mapbox.streets',
+    accessToken: '{{ data['mapbox_token'] }}'
+}).addTo(map);
+
+var exIcon = L.icon({
+	iconUrl: "/static/images/marker-icon.png",
+	iconSize: [25, 41],
+	iconAnchor: [13, 41],
+	popupAnchor: [0, 0],
+});
+
+
+{% for i, row in data['branch'].iterrows(): %}
+L.marker([{{ row['latitude'] }}, {{ row['longitude'] }}], {icon: exIcon}).addTo(map).bindPopup("<strong>{{ row['branch_name'] }}</strong><br/>{{ row['address'] }}");;
+{% endfor %}
+</script>
+
+
+
+</body>
