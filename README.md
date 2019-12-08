@@ -1,8 +1,17 @@
 # Web-Dashboard
-Dashboard for displaying company performance on web based
+Dashboard for displaying company performance on web based.
+Here are some of the features:
+- 
+- 
+
+
+Currently deploy on my Free Tier AWS EC2 at [here](http://3.89.23.255).
+login with username: user & password: user
 
 ## How to deploy
-This is just note for myself, step by step how to deploy it on any linux machine.
+Further will be just technical stuff.
+
+Here are step by step how i deploy this web to my Free Tier AWS EC2 (Ubuntu) machine:
 
 Clone this repository
 ```
