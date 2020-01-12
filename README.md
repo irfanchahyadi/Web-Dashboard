@@ -1,11 +1,15 @@
 # Web-Dashboard
 Dashboard for displaying company performance on web based.
-Here are some of the features:
-- 
-- 
+Here are some of the features so far:
+- Login page
+- Dashboard overview
+- Full color chart by [Chart.js](https://github.com/chartjs/Chart.js)
+- Report for: Sales, Delivery, Revenue
+- Branch location by [Leaflet](https://github.com/Leaflet/Leaflet) + [OpenStreetMap](https://www.openstreetmap.org/)
 
 
 Currently deploy on my Free Tier AWS EC2 at [here](http://3.89.23.255).
+
 login with username: user & password: user
 
 ## How to deploy
@@ -37,6 +41,7 @@ This require :
 - [Flask](https://github.com/pallets/flask), web application framework
 - [Gunicorn](https://github.com/benoitc/gunicorn), WSGI HTTP server
 - [Pandas](https://github.com/pandas-dev/pandas), for data sorting and filtering
+- [Python-dotenv](https://github.com/theskumar/python-dotenv), for storing some secret key
 
 Create .service file
 ```

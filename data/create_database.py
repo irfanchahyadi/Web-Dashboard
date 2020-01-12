@@ -183,7 +183,8 @@ sql_script = """
 		('005', 'BRANCH DENPASAR', '3683619', 'KURIR 5', 'KURIR', 882, 74, 956);
 
 	INSERT INTO w_user values
-		('admin', '{}', '{}', null, 0);
+		('admin', '{}', '{}', null, 0),
+		('user', '{}', '{}', null, 0);
 
 	INSERT INTO w_branch values
 		('001', 'BRANCH JAKARTA', 'Jalan A.M Sangaji No. 22-24, Petojo Utara, Gambir, Kota Jakarta Pusat', -6.167521, 106.813580),
@@ -191,7 +192,7 @@ sql_script = """
 		('003', 'BRANCH SURABAYA', 'Jl. Kusuma Bangsa No.21, Ketabang, Genteng, Kota Surabaya, Jawa Timur', -7.256910, 112.750198),
 		('004', 'BRANCH SEMARANG', 'Jl. Pemuda No.149, RT.5/RW.3, Sekayu, Semarang Tengah, Kota Semarang, Jawa Tengah', -6.980656, 110.412398),
 		('005', 'BRANCH DENPASAR', 'Jl. Gunung Rinjani No.1, Tegal Harum, Denpasar Barat, Kota Denpasar, Bali', -8.663904, 115.199484);
-	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest(), datetime.datetime.now())
+	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest(), datetime.datetime.now(), hashlib.sha1('user'.encode('utf-8')).hexdigest(), datetime.datetime.now())
 
 con = sqlite3.connect(FILENAME)
 cur = con.cursor()
