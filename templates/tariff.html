@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+  <title>Cek Tarif</title>
+  {% include 'head.html' %}
+  <link href="/static/css/dashboard.css" rel="stylesheet">
+</head>
+<body>
+{% include 'header.html' %}
+
+<div class="container">
+      <div class="py-5 text-center">
+        <h2>Tariff Check</h2>
+      </div>
+
+      <div class="row">
+        <div class="mx-auto">
+          <form class="needs-validation" action="/tariff/" method="POST">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <input type="text" class="form-control" id="origin" list="tlc" placeholder="Origin" name="origin" value="{{ request.form.origin }}" required="">
+                <div class="invalid-feedback">
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <input type="text" class="form-control" id="destination" list="tlc" placeholder="Destination" name="destination" value="{{ request.form.destination }}" required="">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+              <div class="col-md-2 mb-3">
+                <input type="text" class="form-control" id="weight" placeholder="Weight" name="weight" value ="{{ request.form.weight }}"required="">
+              </div>
+              <div class="col-md-1 mb-3">
+                <button class="btn btn-primary" type="submit">Check</button>
+              </div>
+             </div>
+	      </form>
+	    </div>
+	  </div>
+</div>
+
+<div class="row">
+	<div class="mx-auto" style="width: 850px">
+		<div class="row">
+		{% if data['tariff'] is none: %}
+			{{ pass}}
+		{% elif data['tariff'].shape[0] == 0: %}
+			<p>Not Found</p>
+		{% else: %}
+            {% for i, row in data['tariff'].iterrows(): %}
+				{% if row[0]=="REG": %} 
+					<button class="btn col-md-3 btn-primary mx-auto btn-sales">
+				{% elif row[0]=="ONEDAY": %}
+					<button class="btn col-md-3 btn-primary mx-auto btn-purchase">
+				{% elif row[0]=="FLASH": %}
+					<button class="btn col-md-3 btn-primary mx-auto btn-delivery">
+				{% endif %}
+
+					<h3>{{ row[0] }}</h3>
+					<span>Price: Rp {{ "{:,.0f}".format(row[3]) }}</span>
+					<p>Estimated Arrival: {{ row[2] ~ " day(s)" }}</p>
+				</button>
+			{% endfor %}
+		{% endif %}
+		</div>
+	</div>
+</div>
+
+
+		<datalist id="tlc">
+			{% for i, j in data["city"].iterrows(): %}
+		  	<option value="{{ j[0] }}">{{ j[1] }}</option>
+		  	{% endfor %}
+		</datalist>
+
+</body>

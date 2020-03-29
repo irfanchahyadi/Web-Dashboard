@@ -89,6 +89,17 @@ sql_script = """
 		tlc VARCHAR(5),
 		note VARCHAR(50));
 
+	CREATE TABLE w_city (
+		tlc VARCHAR(5),
+        name VARCHAR(50));
+
+	CREATE TABLE w_tariff (
+		origin VARCHAR(5),
+        destination VARCHAR(5),
+        service VARCHAR(20),
+        price INT,
+        etd INT);
+
 	INSERT INTO w_all values
 		('001', 'BRANCH JAKARTA', 'ACTIVE', 254809, 6205364000, 806697000, 236108, 231976, 35),
 		('002', 'BRANCH BANDUNG', 'ACTIVE', 253183, 4621349000, 600775000, 261095, 258354, 30),
@@ -239,6 +250,15 @@ sql_script = """
 		('CGK191212341234', '2019-12-05 13:43:24', 'DMK', 'Received by Inbound Demak'),
 		('CGK191212341234', '2019-12-05 15:32:56', 'DMK', 'Deliver by courier Tono'),
 		('CGK191212341234', '2019-12-05 16:07:12', 'DMK', 'Delivered to Ani');
+
+    INSERT INTO w_city values
+        ('CGK', 'Jakarta'),
+        ('SRG', 'Semarang');
+
+    INSERT INTO w_tariff values
+        ('CGK', 'SRG', 'REG', 15000, 3),
+        ('CGK', 'SRG', 'ONEDAY', 20000, 1),
+        ('CGK', 'SRG', 'FLASH', 25000, 0);
 	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest(), datetime.datetime.now(), hashlib.sha1('user'.encode('utf-8')).hexdigest(), datetime.datetime.now())
 
 con = sqlite3.connect(FILENAME)

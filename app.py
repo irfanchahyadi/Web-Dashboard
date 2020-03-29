@@ -145,8 +145,28 @@ def tracking():
         w_tracking_detail = None
 
     data = {"tracking": w_tracking, "tracking_detail": w_tracking_detail}
-    kemarin = datetime.now() - timedelta(days=1)
-    return render_template('tracking.html', date=kemarin.strftime("%d %b %Y"), data=data)
+    yesterday = datetime.now() - timedelta(days=1)
+    return render_template('tracking.html', date=yesterday.strftime("%d %b %Y"), data=data)
+
+@app.route('/tariff/', methods=['GET','POST'])
+def tariff():
+    if request.method == 'POST':
+        try:
+            origin = request.form['origin']
+            destination = request.form['destination']
+            weight = int(request.form['weight'])
+            w_price = pd.read_sql("select service, price, etd from w_tariff where origin='{}' and destination='{}'".format(origin, destination), conn)
+            w_price['total_price'] = w_price['price'] * weight
+            print(w_price)
+        except:
+            w_price = pd.DataFrame({})
+    else:
+        w_price = None
+
+    w_city = pd.read_sql("select * from w_city", conn)
+    data = {"city": w_city, "tariff": w_price}
+    yesterday = datetime.now() - timedelta(days=1)
+    return render_template('tariff.html', date=yesterday.strftime("%d %b %Y"), data=data)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
