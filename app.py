@@ -130,5 +130,23 @@ def galeryp():
     yesterday = datetime.now() - timedelta(days=1)
     return render_template('galery.html', date=yesterday.strftime("%d %b %Y"), data=data)
 
+@app.route('/tracking/', methods=['GET','POST'])
+def tracking():
+    if request.method == 'POST':
+        try:
+            awb = request.form['awb']
+            w_tracking = pd.read_sql("select * from w_tracking where awb='{}'".format(awb), conn)
+            w_tracking_detail = pd.read_sql("select * from w_tracking_detail where awb='{}'".format(awb), conn)
+        except:
+            w_tracking = pd.DataFrame({})
+            w_tracking_detail = pd.DataFrame({})
+    else:
+        w_tracking = None
+        w_tracking_detail = None
+
+    data = {"tracking": w_tracking, "tracking_detail": w_tracking_detail}
+    kemarin = datetime.now() - timedelta(days=1)
+    return render_template('tracking.html', date=kemarin.strftime("%d %b %Y"), data=data)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)

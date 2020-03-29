@@ -74,6 +74,21 @@ sql_script = """
         filename VARCHAR(50),
         thumbnail VARCHAR(50));
 
+	CREATE TABLE w_tracking (
+		awb VARCHAR(20),
+        origin VARCHAR(50),
+        destination VARCHAR(255),
+        service INT,
+        date VARCHAR(50),
+		shipper VARCHAR(50),
+		consignee VARCHAR(50));
+
+	CREATE TABLE w_tracking_detail (
+		awb VARCHAR(20),
+        date VARCHAR(50),
+		tlc VARCHAR(5),
+		note VARCHAR(50));
+
 	INSERT INTO w_all values
 		('001', 'BRANCH JAKARTA', 'ACTIVE', 254809, 6205364000, 806697000, 236108, 231976, 35),
 		('002', 'BRANCH BANDUNG', 'ACTIVE', 253183, 4621349000, 600775000, 261095, 258354, 30),
@@ -210,6 +225,20 @@ sql_script = """
 		('image', 'Warehouse', 'Warehouse source: pexels.com', 0, 'warehouse.jpg', 'warehouse.jpg'),
 		('image', 'Forklift', 'Forklift at our warehouse source: pexels.com', 0, 'forklift.jpg', 'forklift.jpg'),
 		('image', 'Container Truck', 'Container Truck across country source: pexels.com', 0, 'container.jpg', 'container.jpg');
+
+	INSERT INTO w_tracking values
+        ('CGK191212341234', 'Jakarta', 'Demak', 'REG', '2019-12-04 09:32:17', 'Budi', 'Ani');
+	
+	INSERT INTO w_tracking_detail values
+        ('CGK191212341234', '2019-12-04 09:32:17', 'CGK', 'Received by Counter at Jakarta'),
+		('CGK191212341234', '2019-12-04 13:11:56', 'CGK', 'Sorted by Sorting Center at Jakarta'),
+		('CGK191212341234', '2019-12-04 17:49:05', 'CGK', 'Create Manifest at Jakarta'),
+		('CGK191212341234', '2019-12-04 21:25:39', 'SRG', 'Departed from Jakarta to Semarang'),
+		('CGK191212341234', '2019-12-05 10:38:13', 'SRG', 'Transit at Semarang'),
+		('CGK191212341234', '2019-12-05 11:51:48', 'SRG', 'Departed from Semarang to Demak'),
+		('CGK191212341234', '2019-12-05 13:43:24', 'DMK', 'Received by Inbound Demak'),
+		('CGK191212341234', '2019-12-05 15:32:56', 'DMK', 'Deliver by courier Tono'),
+		('CGK191212341234', '2019-12-05 16:07:12', 'DMK', 'Delivered to Ani');
 	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest(), datetime.datetime.now(), hashlib.sha1('user'.encode('utf-8')).hexdigest(), datetime.datetime.now())
 
 con = sqlite3.connect(FILENAME)

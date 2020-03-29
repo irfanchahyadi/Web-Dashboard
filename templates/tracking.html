@@ -1,0 +1,102 @@
+<html lang="en">
+
+<head>
+    <title>Tracking Airwaybill</title>
+    {% include 'head.html' %}
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>Tracking Airwaybill</h2>
+        </div>
+
+        <div class="row">
+            <div class="mx-auto">
+                <form class="needs-validation" action="/tracking/" method="POST">
+                    <div class="row">
+                        <div class="col-md-9 mb-3">
+                            <input type="text" class="form-control" id="awb" placeholder="Airwaybill Number" name="awb"
+                                value="{{ request.form.awb }}" required="">
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-1 mb-3">
+                            <button class="btn btn-primary" type="submit">Tracking</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    {% if data['tracking'] is none: %}
+    <div class="container my-3 text-center">
+        <p>try: CGK191212341234</p>
+    </div>
+    {% elif data['tracking'].shape[0] == 0: %}
+    <div class="container my-3 text-center">
+        <p>Airwaybill not found</p>
+    </div>
+    {% else: %}
+    <div class="container my-3">
+        <table class="table table-sm table-hover">
+            <thead class="thead-light text-left">
+                <tr>
+                    {% for row in data["tracking"]: %}
+                    <th>{{ row.capitalize() }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    {% for col in data["tracking"].values.tolist()[0]: %}
+                    <td class="text-left">
+                        {{ col }}
+                    </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container my-3">
+        <h4>History</h4>
+        <table class="table table-sm table-hover">
+            <thead class="thead-light text-left ">
+                <tr>
+                    <th>
+                        No
+                    </th>
+                    {% for row in data["tracking_detail"]: %}
+                    <th>{{ row.capitalize() }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+    
+            <tbody>
+                {% for i, row in data["tracking_detail"].iterrows(): %}
+                <tr>
+                    <td>
+                        {{ i+1 }}
+                    </td>
+                    {%for col in row: %}
+                    <td class="text-left">
+                        {{ col }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+    {% endif %}
+    </div>
+
+</body>
