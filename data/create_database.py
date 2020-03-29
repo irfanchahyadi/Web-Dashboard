@@ -3,7 +3,7 @@ import sqlite3, os, hashlib, datetime
 FILENAME = 'web.db'
 
 if FILENAME in os.listdir():
-	os.remove(FILENAME)
+    os.remove(FILENAME)
 
 sql_script = """
 	CREATE TABLE w_all (
@@ -65,6 +65,13 @@ sql_script = """
 		address VARCHAR(255),
 		latitude FLOAT,
 		longitude FLOAT);
+
+    CREATE TABLE w_galery (
+        title VARCHAR(50),
+        description VARCHAR(255),
+        duration INT,
+        filename VARCHAR(50),
+        thumbnail VARCHAR(50));
 
 	INSERT INTO w_all values
 		('001', 'BRANCH JAKARTA', 'ACTIVE', 254809, 6205364000, 806697000, 236108, 231976, 35),
@@ -192,6 +199,12 @@ sql_script = """
 		('003', 'BRANCH SURABAYA', 'Jl. Kusuma Bangsa No.21, Ketabang, Genteng, Kota Surabaya, Jawa Timur', -7.256910, 112.750198),
 		('004', 'BRANCH SEMARANG', 'Jl. Pemuda No.149, RT.5/RW.3, Sekayu, Semarang Tengah, Kota Semarang, Jawa Tengah', -6.980656, 110.412398),
 		('005', 'BRANCH DENPASAR', 'Jl. Gunung Rinjani No.1, Tegal Harum, Denpasar Barat, Kota Denpasar, Bali', -8.663904, 115.199484);
+    
+    INSERT INTO w_galery values
+        ('Cleaning Hand', 'Cleaning hand with hand sanitizer source: coverr.co', 1, 'cleaning-hand.mp4', 'cleaning-hand.jpg'),
+        ('Flying Birds', 'Flying birds animation source: coverr.co', 1, 'Flying-Birds.mp4', 'Flying-Birds.jpg'),
+        ('People Walking', 'People walking down the NYC source: coverr.co', 1, 'Going-Places.mp4', 'Going-Places.jpg'),
+        ('Laptop Typing', 'Female hand typing laptop source: coverr.co', 1, 'laptop-typing.mp4', 'laptop-typing.jpg');
 	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest(), datetime.datetime.now(), hashlib.sha1('user'.encode('utf-8')).hexdigest(), datetime.datetime.now())
 
 con = sqlite3.connect(FILENAME)

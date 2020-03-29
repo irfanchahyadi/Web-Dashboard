@@ -116,5 +116,12 @@ def location():
     yesterday = datetime.now() - timedelta(days=1)
     return render_template('location.html', date=yesterday.strftime("%d %b %Y"), data=data)
 
+@app.route('/galery/')
+def galery():
+    w_galery = pd.read_sql("select * from w_galery", conn)
+    data = {"galery": w_galery}
+    yesterday = datetime.now() - timedelta(days=1)
+    return render_template('galery.html', date=yesterday.strftime("%d %b %Y"), data=data)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)

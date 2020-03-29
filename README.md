@@ -5,7 +5,7 @@ Here are some of the features so far:
 - Dashboard overview
 - Full color chart by [Chart.js](https://github.com/chartjs/Chart.js)
 - Report for: Sales, Delivery, Revenue
-- Branch location by [Leaflet](https://github.com/Leaflet/Leaflet) + [OpenStreetMap](https://www.openstreetmap.org/)
+- Branch location by [Leaflet](https://github.com/Leaflet/Leaflet) + [OpenStreetMap](https://www.openstreetmap.org/) using mapbox api
 
 
 Currently deploy on my Free Tier AWS EC2 at [here](http://13.58.205.195/).
@@ -43,6 +43,13 @@ This require :
 - [Gunicorn](https://github.com/benoitc/gunicorn), WSGI HTTP server
 - [Pandas](https://github.com/pandas-dev/pandas), for data sorting and filtering
 - [Python-dotenv](https://github.com/theskumar/python-dotenv), for storing some secret key
+
+Set .env file
+```
+touch .env
+nano .env
+MAPBOX_TOKEN=<paste mapbox token here>
+```
 
 Create .service file
 ```
