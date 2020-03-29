@@ -67,6 +67,7 @@ sql_script = """
 		longitude FLOAT);
 
     CREATE TABLE w_galery (
+		type VARCHAR(10),
         title VARCHAR(50),
         description VARCHAR(255),
         duration INT,
@@ -201,10 +202,14 @@ sql_script = """
 		('005', 'BRANCH DENPASAR', 'Jl. Gunung Rinjani No.1, Tegal Harum, Denpasar Barat, Kota Denpasar, Bali', -8.663904, 115.199484);
     
     INSERT INTO w_galery values
-        ('Cleaning Hand', 'Cleaning hand with hand sanitizer source: coverr.co', 1, 'cleaning-hand.mp4', 'cleaning-hand.jpg'),
-        ('Flying Birds', 'Flying birds animation source: coverr.co', 1, 'Flying-Birds.mp4', 'Flying-Birds.jpg'),
-        ('People Walking', 'People walking down the NYC source: coverr.co', 1, 'Going-Places.mp4', 'Going-Places.jpg'),
-        ('Laptop Typing', 'Female hand typing laptop source: coverr.co', 1, 'laptop-typing.mp4', 'laptop-typing.jpg');
+        ('video', 'Cleaning Hand', 'Cleaning hand with hand sanitizer source: coverr.co', 1, 'cleaning-hand.mp4', 'cleaning-hand.jpg'),
+        ('video', 'Flying Birds', 'Flying birds animation source: coverr.co', 1, 'Flying-Birds.mp4', 'Flying-Birds.jpg'),
+        ('video', 'People Walking', 'People walking down the NYC source: coverr.co', 1, 'Going-Places.mp4', 'Going-Places.jpg'),
+        ('video', 'Laptop Typing', 'Female hand typing laptop source: coverr.co', 1, 'laptop-typing.mp4', 'laptop-typing.jpg'),
+		('image', 'Cargo Ship', 'Cargo ship from above source: pexels.com', 0, 'cargo-ship.jpg', 'cargo-ship.jpg'),
+		('image', 'Warehouse', 'Warehouse source: pexels.com', 0, 'warehouse.jpg', 'warehouse.jpg'),
+		('image', 'Forklift', 'Forklift at our warehouse source: pexels.com', 0, 'forklift.jpg', 'forklift.jpg'),
+		('image', 'Container Truck', 'Container Truck across country source: pexels.com', 0, 'container.jpg', 'container.jpg');
 	""".format(hashlib.sha1('admin'.encode('utf-8')).hexdigest(), datetime.datetime.now(), hashlib.sha1('user'.encode('utf-8')).hexdigest(), datetime.datetime.now())
 
 con = sqlite3.connect(FILENAME)

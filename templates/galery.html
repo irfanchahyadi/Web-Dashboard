@@ -10,11 +10,19 @@
     <main role="main">
       <section class="jumbotron text-center">
         <div class="container">
+		{% if data['type'] == 'video': %}
           <h1 class="jumbotron-heading">Video Galery</h1>
           <p class="lead text-muted">Promotions, tutorials, and other stuff.</p>
           <p>
             <a href="/galery/" class="btn btn-primary my-2" style="width: 100px">Video</a>
-            <a href="/galeryf/" class="btn btn-secondary my-2" style="width: 100px">Foto</a>
+			<a href="/galeryp/" class="btn btn-secondary my-2" style="width: 100px">Image</a>
+		{% else: %}
+		  <h1 class="jumbotron-heading">Image Galery</h1>
+		  <p class="lead text-muted">Informations, Arts, and other stuff.</p>
+		  <p>
+			<a href="/galery/" class="btn btn-secondary my-2" style="width: 100px">Video</a>
+			<a href="/galeryp/" class="btn btn-primary my-2" style="width: 100px">Image</a>
+		{% endif %}
           </p>
         </div>
       </section>
@@ -26,18 +34,18 @@
           <div class="row">
             {% for i, row in data['galery'].iterrows(): %}
               <div class="col-md-4">
-                <a data-toggle="modal" data-target="#{{ row[3].replace('.','') }}">
+                <a data-toggle="modal" data-target="#{{ row[4].replace('.','') }}">
                   <div class="card mb-4 box-shadow">
-                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="/static/galery/{{ row[4] }}" data-holder-rendered="true">
+                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="/static/galery/{{ row[5] }}" data-holder-rendered="true">
                     <div class="card-body" style="height: 150px">
-                      <h6>{{ row[0] }}</h6>
-                      <p class="card-text" style="height: 42px">{{ row[1] }}</p>
+                      <h6>{{ row[1] }}</h6>
+                      <p class="card-text" style="height: 42px">{{ row[2] }}</p>
                       <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                           <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                           <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
                         </div>
-                        <small class="text-muted">{{ row[2] }} mins</small>
+                        <small class="text-muted">{{ row[3] }} mins</small>
                       </div>
                     </div>
                   </div>
@@ -45,22 +53,26 @@
               </div>
 
               <!-- MODALNYA -->
-              <div class="modal fade" id="{{ row[3].replace('.','') }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="{{ row[4].replace('.','') }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h6 class="modal-title" id="exampleModalLabel">{{ row[0] }}</h6>
+                      <h6 class="modal-title" id="exampleModalLabel">{{ row[1] }}</h6>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body">
+					{% if data['type'] == 'video': %}
                       <video width="750" height="400" controls>
-                        <source src="/static/galery/{{ row[3] }}" type="video/mp4">
+                        <source src="/static/galery/{{ row[4] }}" type="video/mp4">
                         Your browser does not support the video tag.
                       </video>
-
-                      <h6 class="mt-2">Komentar Netizen:</h6>
+					{% else: %}
+					<img class="card-img-top" style="height: 400px; width: 750px; display: block;" src="/static/galery/{{ row[5] }}"
+						data-holder-rendered="true">
+					{% endif %}
+						<h6 class="mt-2">Komentar Netizen:</h6>
                       <div class="chat-container">
                         <div class="talk-bubble chat-other">
                           <div class="talktop">
@@ -109,7 +121,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Belum Beres</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Not done</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

@@ -118,8 +118,15 @@ def location():
 
 @app.route('/galery/')
 def galery():
-    w_galery = pd.read_sql("select * from w_galery", conn)
-    data = {"galery": w_galery}
+    w_galery = pd.read_sql("select * from w_galery where type='video'", conn)
+    data = {"type": 'video', "galery": w_galery}
+    yesterday = datetime.now() - timedelta(days=1)
+    return render_template('galery.html', date=yesterday.strftime("%d %b %Y"), data=data)
+
+@app.route('/galeryp/')
+def galeryp():
+    w_galery = pd.read_sql("select * from w_galery where type='image'", conn)
+    data = {"type": 'photo', "galery": w_galery}
     yesterday = datetime.now() - timedelta(days=1)
     return render_template('galery.html', date=yesterday.strftime("%d %b %Y"), data=data)
 
