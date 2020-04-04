@@ -1,5 +1,11 @@
 # Web-Dashboard
 Dashboard for displaying company performance on web based.
+
+<p align="center">
+  <img src="demo/demo.gif"><br/>
+  <i>Web-Dashboard</i>
+</p>
+
 Here are some of the features so far:
 - Login page
 - Dashboard overview
