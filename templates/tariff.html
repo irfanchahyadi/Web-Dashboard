@@ -44,9 +44,13 @@
 	<div class="mx-auto" style="width: 850px">
 		<div class="row">
 		{% if data['tariff'] is none: %}
-			{{ pass}}
+			<div class="container text-center">
+				<p>try: CGK to SRG</p>
+			</div>
 		{% elif data['tariff'].shape[0] == 0: %}
-			<p>Not Found</p>
+			<div class="container text-center">
+				<p>Not Found</p>
+			</div>
 		{% else: %}
             {% for i, row in data['tariff'].iterrows(): %}
 				{% if row[0]=="REG": %} 
