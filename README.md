@@ -5,6 +5,9 @@ Here are some of the features so far:
 - Dashboard overview
 - Full color chart by [Chart.js](https://github.com/chartjs/Chart.js)
 - Report for: Sales, Delivery, Revenue
+- Photo and video Galery
+- Tariff check
+- Tracking Airwaybill
 - Branch location by [Leaflet](https://github.com/Leaflet/Leaflet) + [OpenStreetMap](https://www.openstreetmap.org/) using mapbox api
 
 
